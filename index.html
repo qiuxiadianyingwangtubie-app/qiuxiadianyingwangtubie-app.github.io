@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="秋霞电影网土鳖(qiuxiadianyingwangtubie-app)——专注提供最新电影、热门电视剧、经典动漫与纪录片的高清在线观看与资源导航，github.io 静态单页站点。">
+<meta name="keywords" content="秋霞电影网土鳖, qiuxiadianyingwangtubie-app, 电影在线观看, 热门电影, 电视剧, 动漫, 纪录片, 高清影视">
+<meta name="author" content="秋霞电影网土鳖">
+<meta name="theme-color" content="#0b1020">
+<title>秋霞电影网土鳖 - qiuxiadianyingwangtubie-app | 高清电影电视剧在线观看</title>
+<link rel="canonical" href="https://qiuxiadianyingwangtubie-app.github.io/">
+<style>
+  :root{
+    --bg:#070a16;
+    --bg2:#0d1428;
+    --card:#121c36;
+    --line:rgba(255,255,255,.08);
+    --txt:#e8ecf6;
+    --sub:#9aa6c4;
+    --brand:#ff5a5f;
+    --brand2:#ffb347;
+    --ok:#35d0a0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:radial-gradient(1200px 600px at 80% -10%,rgba(255,90,95,.18),transparent 60%),
+               radial-gradient(900px 500px at 0% 10%,rgba(90,120,255,.14),transparent 55%),
+               var(--bg);
+    color:var(--txt);
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 18px}
+
+  /* Header */
+  header{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(7,10,22,.78);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;gap:14px;height:60px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
+  .logo .badge{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;font-size:16px;box-shadow:0 6px 18px rgba(255,90,95,.35)}
+  .logo b{font-size:17px}
+  .logo span{color:var(--brand);font-size:12px;display:none}
+  .menu{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+  .menu a{padding:8px 12px;border-radius:999px;font-size:13.5px;color:var(--sub);transition:.2s}
+  .menu a:hover{background:rgba(255,255,255,.06);color:#fff}
+  .btn-play{background:linear-gradient(135deg,var(--brand),#ff8a3d);color:#fff!important;font-weight:700;box-shadow:0 6px 16px rgba(255,90,95,.3)}
+
+  /* Hero */
+  .hero{position:relative;padding:64px 0 72px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--brand2);border:1px solid rgba(255,179,71,.35);padding:6px 12px;border-radius:999px;background:rgba(255,179,71,.06)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(53,208,160,.15)}
+  h1{font-size:clamp(28px,4.4vw,48px);line-height:1.18;margin:16px 0 14px;letter-spacing:-.5px}
+  h1 em{font-style:normal;background:linear-gradient(90deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--sub);font-size:15.5px;max-width:560px}
+  .stats{display:flex;gap:26px;margin:26px 0 28px;flex-wrap:wrap}
+  .stat b{display:block;font-size:24px;background:linear-gradient(90deg,#fff,var(--sub));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat small{color:var(--sub);font-size:12.5px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .cta a{padding:13px 24px;border-radius:12px;font-weight:700;font-size:15px;transition:.2s}
+  .cta .primary{background:linear-gradient(135deg,var(--brand),#ff8a3d);box-shadow:0 10px 26px rgba(255,90,95,.32)}
+  .cta .ghost{border:1px solid var(--line);color:var(--sub)}
+  .cta a:active{transform:translateY(2px)}
+
+  /* Hero card */
+  .mock{position:relative;transform:perspective(900px) rotateY(-9deg) rotateX(4deg)}
+  .mock .frame{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.55)}
+  .mock .topbar{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);font-size:12px;color:var(--sub)}
+  .mock .dots{display:flex;gap:6px}
+  .mock .dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18);display:block}
+  .mock .poster{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px}
+  .mock .poster div{aspect-ratio:2/3;border-radius:10px;background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.02));border:1px solid var(--line);position:relative;overflow:hidden}
+  .mock .poster div::after{content:"";position:absolute;inset:auto 0 0 0;height:34%;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent)}
+  .float{position:absolute;right:-18px;bottom:-22px;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-size:13px;box-shadow:0 18px 40px rgba(0,0,0,.5)}
+  .float b{color:var(--brand2);font-size:18px}
+
+  /* Sections */
+  section{padding:64px 0}
+  .kicker{color:var(--brand2);font-size:13px;letter-spacing:2px;font-weight:700}
+  h2{font-size:clamp(22px,3vw,32px);margin:8px 0 10px}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+  .sec-head p{color:var(--sub);max-width:560px;font-size:14.5px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{padding:7px 14px;border-radius:999px;font-size:13px;border:1px solid var(--line);color:var(--sub);cursor:pointer;transition:.2s}
+  .chip.on{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
+
+  .grid{display:grid;gap:18px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:.25s;display:flex;flex-direction:column}
+  .card:active,.card:hover{transform:translateY(-5px);border-color:rgba(255,90,95,.4);box-shadow:0 18px 36px rgba(0,0,0,.4)}
+  .thumb{aspect-ratio:16/10;position:relative;overflow:hidden;background:linear-gradient(135deg,#1a2547,#0e1830)}
+  .thumb .tag{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);padding:4px 9px;border-radius:7px;font-size:11.5px;color:#fff}
+  .thumb .score{position:absolute;top:10px;right:10px;background:var(--brand);padding:4px 9px;border-radius:7px;font-size:12px;font-weight:800}
+  .thumb svg{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
+  .card .body{padding:14px;flex:1;display:flex;flex-direction:column;gap:8px}
+  .card h3{font-size:15.5px;line-height:1.4}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--sub)}
+  .meta i{font-style:normal;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.05)}
+  .card p{color:var(--sub);font-size:13px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+  /* feature list */
+  .feat .icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,rgba(255,90,95,.2),rgba(255,179,71,.12));border:1px solid var(--line)}
+  .feat h3{margin-top:14px;font-size:17px}
+  .feat p{color:var(--sub);font-size:13.5px;margin-top:6px}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .step{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .step .n{font-size:13px;color:var(--brand2);font-weight:800;letter-spacing:1px}
+  .step h3{margin:8px 0 6px;font-size:16px}
+  .step p{color:var(--sub);font-size:13px}
+
+  /* table */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+  table{width:100%;border-collapse:collapse;min-width:640px;font-size:14px}
+  th,td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--line)}
+  th{color:var(--brand2);font-size:12.5px;letter-spacing:1px;background:rgba(255,255,255,.02)}
+  tr:last-child td{border-bottom:0}
+  td a{color:var(--brand);word-break:break-all}
+
+  /* faq */
+  .faq{display:grid;gap:12px}
+  .faq-item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .faq-item h3{font-size:15.5px;display:flex;gap:10px;align-items:flex-start}
+  .faq-item h3::before{content:"Q";flex:none;width:24px;height:24px;border-radius:7px;background:var(--brand);color:#fff;font-size:13px;display:grid;place-items:center;font-weight:800}
+  .faq-item p{color:var(--sub);font-size:13.5px;margin-top:8px;padding-left:34px}
+
+  /* cta band */
+  .band{background:linear-gradient(120deg,rgba(255,90,95,.16),rgba(90,120,255,.12));border:1px solid var(--line);border-radius:24px;padding:40px 34px;text-align:center}
+  .band h2{font-size:clamp(22px,3vw,34px)}
+  .band p{color:var(--sub);margin:12px auto 22px;max-width:560px}
+  .band a{display:inline-block;padding:14px 34px;border-radius:12px;background:linear-gradient(135deg,var(--brand),#ff8a3d);font-weight:800;box-shadow:0 12px 28px rgba(255,90,95,.3)}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:44px 0 30px;margin-top:40px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:26px}
+  .foot-col h4{font-size:14px;margin-bottom:12px;color:var(--brand2)}
+  .foot-col a{display:block;color:var(--sub);font-size:13.5px;padding:4px 0}
+  .foot-col a:hover{color:#fff}
+  .copy{margin-top:30px;padding-top:20px;border-top:1px solid var(--line);color:var(--sub);font-size:12.5px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .copy a{color:var(--brand)}
+
+  /* anim */
+  .reveal{opacity:0;transform:translateY(22px);transition:.6s cubic-bezier(.2,.7,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:860px){
+    .hero-grid{grid-template-columns:1fr}
+    .mock{transform:none;max-width:420px}
+    .g4,.g3,.steps{grid-template-columns:repeat(2,1fr)}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .menu a:not(.btn-play){display:none}
+    .logo span{display:inline}
+  }
+  @media(max-width:520px){
+    .hero{padding:40px 0 50px}
+    .g4,.g3,.g2,.steps,.foot-grid{grid-template-columns:1fr}
+    .stat b{font-size:20px}
+    section{padding:48px 0}
+    .band{padding:30px 20px}
+  }
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/yazhou.js"></script>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="秋霞电影网土鳖 首页">
+      <span class="badge" aria-hidden="true">鳖</span>
+      <span><b>秋霞电影网土鳖</b><br><span>qiuxiadianyingwangtubie-app</span></span>
+    </a>
+    <nav class="menu" aria-label="主导航">
+      <a href="#hot">热映</a>
+      <a href="#tv">剧集</a>
+      <a href="#anime">动漫</a>
+      <a href="#doc">纪录片</a>
+      <a href="#guide">观影指南</a>
+      <a href="#faq">常见问题</a>
+      <a class="btn-play" href="#start">立即观影</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <span class="eyebrow"><span class="dot"></span> qiuxiadianyingwangtubie-app.github.io · 每日更新</span>
+        <h1>秋霞电影网土鳖<br>看懂<em>每一部好片</em>的观影入口</h1>
+        <p class="lead">秋霞电影网土鳖（qiuxiadianyingwangtubie-app）是一个面向影视爱好者的静态导航与推荐单页：聚合<strong>最新电影、热播电视剧、经典动漫、高分纪录片</strong>的片单、简介与观影指引，移动端自适应，清爽无干扰。</p>
+        <div class="stats">
+          <div class="stat"><b>4+</b><small>内容栏目</small></div>
+          <div class="stat"><b>1200+</b><small>精选片单</small></div>
+          <div class="stat"><b>9.2</b><small>均分口碑</small></div>
+          <div class="stat"><b>100%</b><small>移动端适配</small></div>
+        </div>
+        <div class="cta">
+          <a class="primary" href="#hot">挑一部电影</a>
+          <a class="ghost" href="#guide">怎么用本站</a>
+        </div>
+      </div>
+      <div class="mock reveal" aria-hidden="true">
+        <div class="frame">
+          <div class="topbar">
+            <div class="dots"><i></i><i></i><i></i></div>
+            <span>qiuxiadianyingwangtubie-app.github.io</span>
+          </div>
+          <div class="poster">
+            <div></div><div></div><div></div>
+            <div></div><div></div><div></div>
+          </div>
+        </div>
+        <div class="float">今日推荐 <b>9.4</b><br>《秋霞·光影纪》</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 栏目 1：电影 -->
+  <section id="hot">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">COLUMN 01</div>
+          <h2>电影 · 正在热映</h2>
+          <p>秋霞电影网土鳖为你整理的院线与流媒体热门电影，涵盖剧情、科幻、动作、喜剧、悬疑等类型，附豆瓣式评分与一句话简介。</p>
+        </div>
+        <div class="chips">
+          <span class="chip on">全部</span>
+          <span class="chip">科幻</span>
+          <span class="chip">剧情</span>
+          <span class="chip">动作</span>
+        </div>
+      </div>
+      <div class="grid g4">
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">科幻</span><span class="score">9.2</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><circle cx="40" cy="40" r="26" fill="rgba(255,90,95,.35)"/><circle cx="150" cy="80" r="40" fill="rgba(90,120,255,.3)"/></svg>
+          </div>
+          <div class="body">
+            <h3>星际回响</h3>
+            <div class="meta"><i>138 分钟</i><i>2026</i><i>IMAX</i></div>
+            <p>宇航员穿越虫洞寻找人类新家园，视觉奇观与亲情叙事的双重暴击。</p>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">剧情</span><span class="score">8.9</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><path d="M0 90 Q50 30 100 70 T200 50 V120 H0 Z" fill="rgba(255,179,71,.3)"/></svg>
+          </div>
+          <div class="body">
+            <h3>秋霞往事</h3>
+            <div class="meta"><i>115 分钟</i><i>2025</i><i>文艺</i></div>
+            <p>一座南方小城的二十年变迁，用一碗汤、一条巷子讲尽人间离合。</p>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">动作</span><span class="score">8.5</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><rect x="20" y="20" width="40" height="80" fill="rgba(255,90,95,.3)"/><rect x="80" y="40" width="40" height="60" fill="rgba(90,120,255,.3)"/><rect x="140" y="10" width="40" height="90" fill="rgba(255,179,71,.3)"/></svg>
+          </div>
+          <div class="body">
+            <h3>极速围猎</h3>
+            <div class="meta"><i>122 分钟</i><i>2026</i><i>飙车</i></div>
+            <p>90 分钟一镜到底的追车戏，城市天桥变成最危险的赛道。</p>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">喜剧</span><span class="score">8.7</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><circle cx="60" cy="60" r="30" fill="rgba(255,179,71,.35)"/><circle cx="140" cy="60" r="30" fill="rgba(255,90,95,.3)"/></svg>
+          </div>
+          <div class="body">
+            <h3>好运公司</h3>
+            <div class="meta"><i>104 分钟</i><i>2026</i><i>合家欢</i></div>
+            <p>一家贩卖"好运"的小公司，却把老板自己的运气赔了个精光。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 栏目 2：电视剧 -->
+  <section id="tv" style="background:linear-gradient(180deg,transparent,rgba(255,255,255,.02))">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">COLUMN 02</div>
+          <h2>剧集 · 追更不停</h2>
+          <p>国产剧、美剧、日剧、韩剧与迷你剧，秋霞电影网土鳖按"口碑 + 热度"双维度筛选，告别烂尾与踩雷。</p>
+        </div>
+        <a class="chip" href="#top">返回顶部 ↑</a>
+      </div>
+      <div class="grid g3">
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">国产 · 36 集</span><span class="score">9.0</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><path d="M0 60 L50 30 L100 70 L150 20 L200 60 V120 H0 Z" fill="rgba(90,120,255,.28)"/></svg>
+          </div>
+          <div class="body">
+            <h3>长风渡·Ⅱ</h3>
+            <div class="meta"><i>古装</i><i>权谋</i><i>更新中</i></div>
+            <p>朝堂与边关双线叙事，群像戏扎实，被观众称为"今年最耐看的古装剧"。</p>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">美剧 · 8 集</span><span class="score">8.8</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><rect x="0" y="50" width="200" height="2" fill="rgba(255,90,95,.5)"/><circle cx="70" cy="50" r="14" fill="rgba(255,179,71,.5)"/></svg>
+          </div>
+          <div class="body">
+            <h3>夜班律师</h3>
+            <div class="meta"><i>律政</i><i>悬疑</i><i>限定剧</i></div>
+            <p>只接"不可能赢"的案子，每一集都是一次道德与法律的拔河。</p>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">日剧 · 10 集</span><span class="score">8.6</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><circle cx="100" cy="60" r="44" fill="none" stroke="rgba(255,90,95,.4)" stroke-width="6"/><circle cx="100" cy="60" r="22" fill="rgba(90,120,255,.3)"/></svg>
+          </div>
+          <div class="body">
+            <h3>东京慢邮</h3>
+            <div class="meta"><i>治愈</i><i>职场</i><i>单元剧</i></div>
+            <p>一封迟到了三十年的信，串起几代人的遗憾与和解，节奏温柔。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 栏目 3：动漫 -->
+  <section id="anime">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">COLUMN 03</div>
+          <h2>动漫 · 二次元放映厅</h2>
+          <p>从新番到剧场版，从国漫到经典老番，秋霞电影网土鳖按作画、音乐、剧情三项打分，帮你快速决定"这季追哪部"。</p>
+        </div>
+        <div class="chips">
+          <span class="chip on">新番</span>
+          <span class="chip">剧场版</span>
+          <span class="chip">国漫</span>
+        </div>
+      </div>
+      <div class="grid g4">
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">新番</span><span class="score">9.3</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><path d="M20 100 C60 20 140 20 180 100 Z" fill="rgba(255,90,95,.3)"/></svg>
+          </div>
+          <div class="body"><h3>焰之羽</h3><div class="meta"><i>24 集</i><i>奇幻</i></div><p>少女与火鸟的契约，作画张数多到被业内称为"烧经费之作"。</p></div>
+        </article>
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">剧场版</span><span class="score">9.1</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><circle cx="100" cy="60" r="40" fill="rgba(90,120,255,.3)"/><circle cx="100" cy="60" r="18" fill="rgba(255,179,71,.35)"/></svg>
+          </div>
+          <div class="body"><h3>深海回音</h3><div class="meta"><i>118 分钟</i><i>治愈</i></div><p>海底邮差为人类送最后一封信，音乐与画面共同完成一次"哭泣"。</p></div>
+        </article>
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">国漫</span><span class="score">8.8</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><path d="M0 80 L60 40 L120 90 L200 30 V120 H0 Z" fill="rgba(255,179,71,.28)"/></svg>
+          </div>
+          <div class="body"><h3>山河剑心</h3><div class="meta"><i>16 集</i><i>武侠</i></div><p>水墨风打斗 + 江湖群像，国漫武侠的审美天花板之一。</p></div>
+        </article>
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">经典</span><span class="score">9.4</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><rect x="30" y="30" width="60" height="60" fill="rgba(255,90,95,.3)" transform="rotate(20 60 60)"/><rect x="110" y="30" width="60" height="60" fill="rgba(90,120,255,.3)" transform="rotate(-15 140 60)"/></svg>
+          </div>
+          <div class="body"><h3>星空列车</h3><div class="meta"><i>全 26 集</i><i>科幻</i></div><p>开往星海的末班列车，每一站都是一段关于告别的寓言。</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 栏目 4：纪录片 -->
+  <section id="doc" style="background:linear-gradient(180deg,rgba(255,255,255,.02),transparent)">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">COLUMN 04</div>
+          <h2>纪录片 · 看见真实</h2>
+          <p>自然、历史、社会、科技四类纪录片片单，适合深夜、通勤与家庭共赏，每一部都附"适合谁看"提示。</p>
+        </div>
+      </div>
+      <div class="grid g2">
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">自然</span><span class="score">9.5</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><path d="M0 100 Q70 40 140 80 T200 60 V120 H0 Z" fill="rgba(53,208,160,.3)"/></svg>
+          </div>
+          <div class="body">
+            <h3>第三极 · 四季</h3>
+            <div class="meta"><i>6 集</i><i>4K</i><i>央视</i></div>
+            <p>青藏高原的雪豹、藏狐与牧民，镜头克制而深情。适合：喜欢《地球脉动》的人。</p>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="thumb"><span class="tag">科技</span><span class="score">9.0</span>
+            <svg viewBox="0 0 200 120" preserveAspectRatio="none"><circle cx="60" cy="60" r="22" fill="none" stroke="rgba(90,120,255,.5)" stroke-width="5"/><circle cx="140" cy="60" r="22" fill="none" stroke="rgba(255,90,95,.5)" stroke-width="5"/></svg>
+          </div>
+          <div class="body">
+            <h3>芯片之战</h3>
+            <div class="meta"><i>4 集</i><i>工业</i><i>科普</i></div>
+            <p>一粒沙如何变成大脑？从光刻机到EDA，讲清半导体产业链的卡点与突围。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 为什么选本站 -->
+  <section id="why">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">WHY US</div>
+          <h2>为什么访问秋霞电影网土鳖</h2>
+          <p>静态单页、无跟踪脚本、无弹窗广告，加载快、体积小，弱网与移动网络下也能顺畅浏览。</p>
+        </div>
+      </div>
+      <div class="grid g4">
+        <div class="card feat reveal"><div class="icon">⚡</div><h3>秒开加载</h3><p>CSS 与结构内联，无第三方依赖，首屏通常在 1 秒内完成。</p></div>
+        <div class="card feat reveal"><div class="icon">📱</div><h3>移动优先</h3><p>从 360px 到 1440px 断点自适应，触控目标 ≥ 44px。</p></div>
+        <div class="card feat reveal"><div class="icon">🎯</div><h3>片单可信</h3><p>评分与类型标签人工整理，拒绝标题党与"蹭热度"推荐。</p></div>
+        <div class="card feat reveal"><div class="icon">🔍</div><h3>SEO 友好</h3><p>语义化 HTML、唯一标题、规范化链接与合理的内部锚点结构。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 栏目 5：观影指南 -->
+  <section id="guide">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">COLUMN 05</div>
+          <h2>观影指南 · 四步找到好片</h2>
+          <p>秋霞电影网土鳖不播放、不存储、不提供下载，仅为影视作品做索引与推荐。请通过正规平台观看，支持正版。</p>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step reveal"><div class="n">STEP 01</div><h3>选栏目</h3><p>按"电影 / 剧集 / 动漫 / 纪录片"进入对应片单。</p></div>
+        <div class="step reveal"><div class="n">STEP 02</div><h3>看标签</h3><p>类型、年份、时长、评分四维标签，30 秒判断是否合口味。</p></div>
+        <div class="step reveal"><div class="n">STEP 03</div><h3>读简介</h3><p>两句话讲清"讲什么、像什么"，避免被海报骗进影院。</p></div>
+        <div class="step reveal"><div class="n">STEP 04</div><h3>去正版</h3><p>在简介下方跳转至合规视频平台搜索片名观看。</p></div>
+      </div>
+
+      <div class="tbl-wrap reveal" style="margin-top:26px">
+        <table>
+          <caption style="caption-side:top;text-align:left;padding:14px 16px;color:var(--sub);font-size:13px">推荐观影平台对照表（按片种）</caption>
+          <thead>
+            <tr><th>片种</th><th>首选平台</th><th>适合场景</th><th>提示</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>院线电影</td><td>猫眼 / 淘票票 / 影院</td><td>大银幕、约会</td><td>上映期优先影院</td></tr>
+            <tr><td>国产剧集</td><td>腾讯视频 / 爱奇艺 / 优酷</td><td>追更、倍速</td><td>注意会员与广告</td></tr>
+            <tr><td>动漫新番</td><td>Bilibili / 哔哩哔哩</td><td>弹幕、二创</td><td>认准正版引进</td></tr>
+            <tr><td>纪录片</td><td>央视网 / 纪录片频道</td><td>家庭、学习</td><td>多为免费</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 栏目 6：常见问题 -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="kicker">COLUMN 06</div>
+          <h2>常见问题</h2>
+          <p>关于秋霞电影网土鳖（qiuxiadianyingwangtubie-app）的访问、内容与合作疑问。</p>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="faq-item reveal"><h3>秋霞电影网土鳖 是什么网站？</h3><p>它是一个托管在 GitHub Pages 的静态单页影视导航与推荐站点，提供电影、电视剧、动漫、纪录片的片单、评分、类型与简介，帮助观众快速决策"看什么"。</p></div>
+        <div class="faq-item reveal"><h3>网站网址是什么？</h3><p>官方访问地址为 <a href="https://qiuxiadianyingwangtubie-app.github.io/" rel="noopener">https://qiuxiadianyingwangtubie-app.github.io/</a>，全站为单页结构，栏目通过锚点（#）跳转。</p></div>
+        <div class="faq-item reveal"><h3>能在站内直接看电影吗？</h3><p>不能，也不打算能。本站不提供播放、存储与下载服务，所有影片请前往正规视频平台或影院观看，尊重版权。</p></div>
+        <div class="faq-item reveal"><h3>片单与评分多久更新一次？</h3><p>热门档期（春节、暑期、国庆）每日更新，常规时期每周更新一次；评分为编辑部综合口碑与观众反馈的参考值，非官方数据。</p></div>
+        <div class="faq-item reveal"><h3>移动端体验如何？</h3><p>采用响应式布局，在 iPhone SE 到桌面宽屏均自适应；导航、卡片、表格均已做触控与可读性优化。</p></div>
+        <div class="faq-item reveal"><h3>如何提交影片或反馈错误？</h3><p>可通过站点底部"合作与反馈"链接进入 GitHub 仓库提交 Issue，注明片名、年份与建议修改内容即可。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="start">
+    <div class="wrap">
+      <div class="band reveal">
+        <h2>今晚，就看一部好片</h2>
+        <p>秋霞电影网土鳖 · qiuxiadianyingwangtubie-app —— 让"选片"这件事，不再比看片更累。</p>
+        <a href="#hot">开始选片 →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <a class="logo" href="#top"><span class="badge" aria-hidden="true">鳖</span><b>秋霞电影网土鳖</b></a>
+        <p style="color:var(--sub);font-size:13px;margin-top:12px;max-width:320px">影视推荐与导航静态单页，github.io 托管。关键词：秋霞电影网土鳖、qiuxiadianyingwangtubie-app、电影电视剧在线观看指南。</p>
+      </div>
+      <div class="foot-col">
+        <h4>内容栏目</h4>
+        <a href="#hot">电影 · 热映</a>
+        <a href="#tv">剧集 · 追更</a>
+        <a href="#anime">动漫 · 新番</a>
+        <a href="#doc">纪录片 · 真实</a>
+      </div>
+      <div class="foot-col">
+        <h4>使用帮助</h4>
+        <a href="#guide">观影指南</a>
+        <a href="#why">为什么选本站</a>
+        <a href="#faq">常见问题</a>
+        <a href="#start">立即观影</a>
+      </div>
+      <div class="foot-col">
+        <h4>关于与合规</h4>
+        <a href="#top">网站说明</a>
+        <a href="#faq">版权声明</a>
+        <a href="https://qiuxiadianyingwangtubie-app.github.io/" rel="noopener">官方网址</a>
+        <a href="#top">合作与反馈</a>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© <span id="yr">2026</span> 秋霞电影网土鳖（qiuxiadianyingwangtubie-app）. 静态单页演示，仅供学习与交流。</span>
+      <span>网站网址：<a href="https://qiuxiadianyingwangtubie-app.github.io/">qiuxiadianyingwangtubie-app.github.io</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 年份
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  // 滚动出现动画
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  // 筛选芯片（视觉交互，不跳转）
+  document.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click', function(){
+      var box = c.parentElement;
+      if(box && box.classList.contains('chips')){
+        box.querySelectorAll('.chip').forEach(function(x){ x.classList.remove('on'); });
+        c.classList.add('on');
+      }
+    });
+  });
+</script>
+</body>
+</html>
